@@ -20,37 +20,30 @@
         flex-wrap: wrap;
         gap: 15px;
       }
-      .favorites img {
-        width: 150px;
-      }
     </style>
   </head>
   <body>
     <div id="app"></div>
 
-    <script
-      src="https://unpkg.com/react@18/umd/react.development.js"
-      crossorigin
-    ></script>
-    <script
-      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
-      crossorigin
-    ></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
     <script type="text/babel">
       function Title() {
-        return <h1>나만 없어 고양이</h1>;
+        return (
+          <h1>나만 없어 고양이</h1>
+        );
       }
 
       function Form() {
+        function handleFormSubmit(event) {
+          event.preventDefault();
+          console.log('create cat');
+        }
         return (
-          <form>
-            <input
-              type="text"
-              name="name"
-              placeholder="영어 대사를 입력해주세요"
-            />
+          <form onSubmit={handleFormSubmit}>
+            <input type="text" name="name" placeholder="영어 대사를 입력해주세요" />
             <button type="submit">생성</button>
           </form>
         );
@@ -59,14 +52,14 @@
       function CatItem(props) {
         return (
           <li>
-            <img src={props.img} />
+            <img src={props.img} style={{ width: "150px" }} />
           </li>
         );
       }
 
-      function Favorites(props) {
+      function Favorites() {
         return (
-          <ul class="favorites">
+          <ul className="favorites">
             <CatItem img="https://cataas.com/cat/BxqL2EjFmtxDkAm2/says/inflearn" />
             <CatItem img="https://cataas.com/cat/18MD6byVC1yKGpXp/says/JavaScript" />
           </ul>
@@ -74,14 +67,16 @@
       }
 
       function MainCard(props) {
+        function handleHeartClick() {
+          console.log('click heart');
+        }
+        function handleHeartMouseOver() {
+          console.log('hahaha')
+        }
         return (
-          <div class="main-card">
-            <img
-              src="https://cataas.com/cat/HSENVDU4ZMqy7KQ0/says/react"
-              alt="고양이"
-              width="400"
-            />
-            <button>🤍</button>
+          <div className="main-card">
+            <img src={props.img} alt="고양이" width="400" />
+            <button onClick={handleHeartClick} onMouseOver={handleHeartMouseOver}>🤍</button>
           </div>
         );
       }
@@ -90,7 +85,7 @@
         <div>
           <Title />
           <Form />
-          <MainCard />
+          <MainCard img="https://cataas.com/cat/HSENVDU4ZMqy7KQ0/says/react" />
           <Favorites />
         </div>
       );
