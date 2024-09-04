@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>나만 없어 고양이</title>
+    <style>
+      body {
+        text-align: center;
+      }
+      .main-card button {
+        position: relative;
+        left: -45px;
+        bottom: 15px;
+      }
+      .favorites {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+      .favorites img {
+        width: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script type="text/babel">
+      const title = <h1>나만 없어 고양이</h1>;
+
+      const form = (
+        <form>
+          <input
+            type="text"
+            name="name"
+            placeholder="영어 대사를 입력해주세요"
+          />
+          <button type="submit">생성</button>
+        </form>
+      );
+
+      const catItem = (
+        <li>
+          <img src="https://cataas.com/cat/HSENVDU4ZMqy7KQ0/says/react" />
+        </li>
+      );
+
+      const favorites = <ul class="favorites">{catItem}</ul>;
+
+      const mainCard = (
+        <div class="main-card">
+          <img
+            src="https://cataas.com/cat/HSENVDU4ZMqy7KQ0/says/react"
+            alt="고양이"
+            width="400"
+          />
+          <button>🤍</button>
+        </div>
+      );
+
+      const app = (
+        <div>
+          {title}
+          {form}
+          {mainCard}
+          {favorites}
+        </div>
+      );
+
+      const draw = document.querySelector("#app");
+      ReactDOM.render(app, draw);
+    </script>
+  </body>
+</html>
