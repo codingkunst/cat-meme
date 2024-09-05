@@ -25,25 +25,37 @@
   <body>
     <div id="app"></div>
 
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
     <script type="text/babel">
-      function Title() {
-        return (
-          <h1>나만 없어 고양이</h1>
-        );
+      function Title(props) {
+        return <h1>{props.children}</h1>;
       }
 
-      function Form() {
-        function handleFormSubmit(event) {
-          event.preventDefault();
-          console.log('create cat');
+      function Form(props) {
+        const [value, setValue] = React.useState('');
+        function handleInputChange(event) {
+          console.log(event.target.value.toUpperCase())
+          setValue(event.target.value.toUpperCase())
         }
+
         return (
-          <form onSubmit={handleFormSubmit}>
-            <input type="text" name="name" placeholder="영어 대사를 입력해주세요" />
+          <form onSubmit={props.handleFormSubmit}>
+            <input
+              type="text"
+              name="name"
+              placeholder="영어 대사를 입력해주세요"
+              value={value}
+              onChange={handleInputChange}
+            />
             <button type="submit">생성</button>
           </form>
         );
@@ -57,42 +69,59 @@
         );
       }
 
-      function Favorites() {
+      function Favorites(props) {
         return (
           <ul className="favorites">
-            <CatItem img="https://cataas.com/cat/BxqL2EjFmtxDkAm2/says/inflearn" />
-            <CatItem img="https://cataas.com/cat/18MD6byVC1yKGpXp/says/JavaScript" />
+            {props.favorites.map((item) => {
+              return <CatItem img={item} key={item} />;
+            })}
           </ul>
         );
       }
 
       function MainCard(props) {
-        function handleHeartClick() {
-          console.log('click heart');
-        }
-        function handleHeartMouseOver() {
-          console.log('hahaha')
-        }
         return (
           <div className="main-card">
             <img src={props.img} alt="고양이" width="400" />
-            <button onClick={handleHeartClick} onMouseOver={handleHeartMouseOver}>🤍</button>
+            <button onClick={props.handleHeartClick}>🤍</button>
           </div>
         );
       }
 
-      const app = (
-        <div>
-          <Title />
-          <Form />
-          <MainCard img="https://cataas.com/cat/HSENVDU4ZMqy7KQ0/says/react" />
-          <Favorites />
-        </div>
-      );
+      const App = () => {
+        const CAT1 = "https://cataas.com/cat/HSENVDU4ZMqy7KQ0/says/react";
+        const CAT2 = "https://cataas.com/cat/BxqL2EjFmtxDkAm2/says/inflearn";
+        const CAT3 = "https://cataas.com/cat/18MD6byVC1yKGpXp/says/JavaScript";
+
+        const [count, setCount] = React.useState(1);
+        const [mainCat, setMainCat] = React.useState(CAT1);
+        const [favorites, setFavorites] = React.useState([CAT1, CAT2]);
+
+        function handleFormSubmit(event) {
+          event.preventDefault();
+          console.log("create cat");
+          setCount(count + 1);
+          setMainCat(CAT2);
+        }
+
+        function handleHeartClick() {
+          console.log("click heart");
+          setFavorites([...favorites, CAT3]);
+        }
+
+        return (
+          <div>
+            <Title>{count}번째 고양이</Title>
+            <Form handleFormSubmit={handleFormSubmit} />
+            <MainCard img={mainCat} handleHeartClick={handleHeartClick} />
+            <Favorites favorites={favorites} />
+          </div>
+        );
+      };
 
       const draw = document.querySelector("#app");
 
-      ReactDOM.render(app, draw);
+      ReactDOM.render(<App />, draw);
     </script>
   </body>
 </html>
