@@ -2,3 +2,5 @@
 - https://babeljs.io/
 - https://ant.design/
 - https://emotion.sh/docs/introduction
+function name convention
+- handle ~ Click/Change/Submit
