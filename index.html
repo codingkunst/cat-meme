@@ -5,17 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>나만 없어 여우</title>
     <style>
+      @font-face {
+            font-family: "LeeSeoyun";
+            src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2202-2@1.0/LeeSeoyun.woff") format("woff");
+            font-weight: normal;
+            font-style: normal;
+        }
       body {
         text-align: center;
         background-image: url("https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/bucketList/bg-grid.png");
         background-position: center;
         background-size: cover;
+        font-family: "LeeSeoyun";
       }
+
       .main-card button {
         position: relative;
         left: -45px;
         bottom: 15px;
       }
+
       .favorites {
         list-style: none;
         display: flex;
@@ -29,8 +38,14 @@
   <body>
     <div id="app"></div>
 
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
     <script type="text/babel">
@@ -99,7 +114,7 @@
         );
       }
 
-      // 고양이 사진 목록
+      // 여우 사진 목록
       function CatItem(props) {
         return (
           <li>
@@ -127,7 +142,7 @@
 
         return (
           <div className="main-card">
-            <img src={props.img} alt="Loading..." width="400" />
+            <img className="image" src={props.img} alt="Loading..." width="400" />
             <button onClick={props.onHeartClick}>{heartIcon}</button>
           </div>
         );
@@ -138,18 +153,18 @@
         const CAT2 = "https://cataas.com/cat/BxqL2EjFmtxDkAm2/says/inflearn";
         const CAT3 = "https://cataas.com/cat/18MD6byVC1yKGpXp/says/JavaScript";
 
-        const [count, setCount] = React.useState(
-          jsonLocalStorage.getItem("count")
-        );
+        const [count, setCount] = React.useState(() => {
+          return jsonLocalStorage.getItem("count");
+        }); // 생성 카운트
         const [mainCat, setMainCat] = React.useState(CAT1);
-        const [favorites, setFavorites] = React.useState(
-          jsonLocalStorage.getItem("favorites") || []
-        );
+        const [favorites, setFavorites] = React.useState(() => {
+          return jsonLocalStorage.getItem("favorites") || []
+        });
 
         const alreadyFavorite = favorites.includes(mainCat);
 
         async function setInitialCat() {
-          const newCat = await fetchCat("first cat");
+          const newCat = await fetchCat("first fox");
           setMainCat(newCat);
         }
 
@@ -161,9 +176,12 @@
           const newCat = await fetchCat(value);
 
           setMainCat(newCat);
-          const nextCount = count + 1;
-          setCount(nextCount);
-          jsonLocalStorage.setItem("count", nextCount);
+
+          setCount((prev) => {
+            const nextCount = prev + 1;
+            jsonLocalStorage.setItem("count", nextCount);
+            return nextCount;
+          });
         }
 
         function handleHeartClick() {
@@ -173,6 +191,7 @@
         }
 
         const countTitle = count === null ? "" : count + "번째";
+
         return (
           <div>
             <Title>{countTitle} 여우</Title>
@@ -189,7 +208,11 @@
 
       const draw = document.querySelector("#app");
 
-      ReactDOM.render(<App />, draw);
+      // react18 경고 때문에 설정함
+      const root = ReactDOM.createRoot(draw);
+      root.render(<App />);
+
+      // ReactDOM.render(<App />, draw);
     </script>
   </body>
 </html>
